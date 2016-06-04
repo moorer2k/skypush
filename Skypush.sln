@@ -7,6 +7,9 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Skypush", "Skypush\Skypush.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{653C358A-B517-42A4-8D22-6B486E64F8AE}"
 	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
 		.nuget\packages.config = .nuget\packages.config
 	EndProjectSection
 EndProject

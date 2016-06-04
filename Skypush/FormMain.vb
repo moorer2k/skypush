@@ -1,83 +1,45 @@
 ﻿Imports System.Threading
+Imports ManagedWinapi
+Imports ManagedWinapi.Hooks
+
 Imports SKYPE4COMLib
+Imports Skypush.ThemeBase
 
 Public Class FormMain
 
-    Private WithEvents _skype As New Skype
+#Region "Fields"
+
     Private ReadOnly _hkMan As New HotKeyMan()
 
-    Private Sub FormMain_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
-        My.Settings.HKEnabled = checkEnable.Toggled
-        My.Settings.Save()
-    End Sub
-    Private Sub FormMain_Load(sender As Object, e As EventArgs) Handles Me.Load
-
-        If My.Settings.HKEnabled Then LowLevelKeyboardHook1.StartHook()
-
-        CheckHKControls()
-
-        winControlBox.AboutForm = FormAbout
-
-
-        Dim tLoad As New Thread(CType(Sub()
-
-                                          _skype.Attach(5, False)
-
-                                      End Sub, ThreadStart))
-
-        tLoad.Start()
-
-        checkEnable.Toggled = My.Settings.HKEnabled
-
-    End Sub
-    Private Sub _skype_AttachmentStatus(status As TAttachmentStatus) Handles _skype.AttachmentStatus
-        If status = TAttachmentStatus.apiAttachSuccess Then
-            checkEnable.Enabled = True
-            CheckHkControls()
-        End If
-    End Sub
-
-    Private Sub _skype_Reply(pCommand As Command) Handles _skype.Reply
-        'useful for detecting various other non-supported events from Skype
-    End Sub
-
-    Private Sub CheckHkControls()
-
-        checkEnable.Toggled = My.Settings.HKEnabled
-
-        If String.IsNullOrEmpty(My.Settings.HotKey) Then
-            TextHotKey.Text = "Click here to set."
-            labelHotKey.Text = "No hotkey(s) set."
-        Else
-            _hkMan.RefreshHotKeys(Hotkey1)
-            TextHotKey.Text = My.Settings.HotKey
-            labelHotKey.Text = "Hotkey(s) assigned!"
-        End If
-
-    End Sub
-
+    Private _hotKeySelected As Boolean
     Private _isPressed As Boolean
-    Protected Overrides Function ProcessCmdKey(ByRef msg As Message, ByVal keyData As Keys) As Boolean
+    Private WithEvents _skype As New Skype
 
+#End Region 'Fields
+
+#Region "Methods"
+
+    Protected Overrides Function ProcessCmdKey(ByRef msg As Message, keyData As Keys) As Boolean
         Try
 
             If _hotKeySelected Then
+
+                LowLevelKeyboardHook1.Unhook()
+                Hotkey1.Enabled = False
 
                 Select Case keyData
 
                     Case Keys.Escape
 
-                        CheckHKControls()
+                        CheckHkControls(False)
 
-                        headOptions.Focus()
+                        checkEnable.Focus()
 
                     Case Keys.Return
 
-                        _hkMan.RefreshHotKeys(Hotkey1)
+                        CheckHkControls(True)
 
-                        CheckHKControls()
-
-                        headOptions.Focus()
+                        checkEnable.Focus()
 
                         Return True
 
@@ -85,9 +47,7 @@ Public Class FormMain
 
                     Case Else
 
-                        _hkMan.ProcessKeys(keyData)
-
-                        TextHotKey.Text = My.Settings.HotKey
+                        TextHotKey.Text = _hkMan.ProcessKeys(keyData)
 
                         Return True
 
@@ -100,24 +60,79 @@ Public Class FormMain
         End Try
 
         Return MyBase.ProcessCmdKey(msg, keyData)
-
     End Function
 
-    Private _hotKeySelected As Boolean
+    Private Sub CheckHkControls(save As Boolean)
 
-    Private Sub TextHotKey_Enter(sender As Object, e As EventArgs) Handles TextHotKey.Enter
+        checkEnable.Toggled = My.Settings.HKEnabled
 
-        TextHotKey.Text = ""
-        _hotKeySelected = True
-        Hotkey1.Enabled = False
-        labelHotKey.Text = "Return to Save / ESC to Cancel."
+        If save Then
+
+            My.Settings.HotKey = TextHotKey.Text
+            My.Settings.Save()
+
+            _hkMan.RefreshHotKeys(Hotkey1)
+
+        End If
+
+        If String.IsNullOrEmpty(My.Settings.HotKey) Then
+            TextHotKey.Text = "Click here to set."
+            labelHotKey.Text = "No hotkey(s) set."
+        Else
+            TextHotKey.Text = My.Settings.HotKey
+            labelHotKey.Text = "Hotkey(s) assigned!"
+        End If
+
+        headHotKeys.Focus()
+
 
     End Sub
 
-    Private Sub TextHotKey_Leave(sender As Object, e As EventArgs) Handles TextHotKey.Leave
+    Private Sub FormMain_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
+        My.Settings.HKEnabled = checkEnable.Toggled
+        My.Settings.Save()
+    End Sub
 
-        _hotKeySelected = False
-        CheckHkControls()
+    Private Sub SetNotification(title As String, msg As String, type As MonoFlat_NotificationBox.Type)
+
+        With notificationStatus
+            .Title = title
+            .Text = msg
+            .NotificationType = type
+            .Height = 132
+            .Visible = True
+            .BringToFront()
+            .Show()
+        End With
+
+    End Sub
+    Private Function CheckSkype()
+
+        Dim isRunning As Boolean
+
+        Try
+
+            isRunning = Process.GetProcessesByName("Skype").FirstOrDefault().Responding
+
+        Catch ex As Exception
+            Return False
+        End Try
+
+        Return isRunning
+
+    End Function
+
+    Private Sub FormMain_Load(sender As Object, e As EventArgs) Handles Me.Load
+
+        CheckHkControls(False)
+
+        winControlBox.AboutForm = FormAbout
+
+        If CheckSkype() Then
+            _skype.Attach(5, False)
+        Else
+            SetNotification("SKYPE NOT RUNNING?", "Skype is either not open or the original file name has been changed. Re-Open Skype or use Skype.exe as the EXE name and try again.", 3)
+        End If
 
     End Sub
 
@@ -138,8 +153,86 @@ Public Class FormMain
             DirectCast(_skype, ISkype).Mute = True
 
             Debug.WriteLine("Unpressed")
+        Else
+            Debug.WriteLine("KeyPressed")
 
         End If
+
+    End Sub
+
+    Private Sub TextHotKey_Enter(sender As Object, e As EventArgs) Handles TextHotKey.Enter
+        TextHotKey.Text = ""
+        _hotKeySelected = True
+        Hotkey1.Enabled = False
+        labelHotKey.Text = "Return to Save / ESC to Cancel."
+    End Sub
+
+    Private Sub TextHotKey_Leave(sender As Object, e As EventArgs) Handles TextHotKey.Leave
+        _hotKeySelected = False
+        CheckHkControls(False)
+    End Sub
+
+    Private Sub _skype_AttachmentStatus(status As TAttachmentStatus) Handles _skype.AttachmentStatus
+        Debug.WriteLine(status)
+        Select Case status
+
+            Case TAttachmentStatus.apiAttachAvailable
+
+            Case TAttachmentStatus.apiAttachNotAvailable
+
+            Case TAttachmentStatus.apiAttachPendingAuthorization
+                SetNotification("CONFIRM ACCESS TO SKYPE", "Please check your Skype, the request should be displayed at the top section of whichever window you have displayed.", 0)
+
+            Case TAttachmentStatus.apiAttachRefused
+
+                SetNotification("ACCESS HAS BEEN BLOCKED!", "Skypush was blocked from Skype! Please go to Tools -> Options -> Advanced and look for 'Manage other programs access to Skype' then remove Skypush from the list.", 3)
+
+            Case TAttachmentStatus.apiAttachSuccess
+
+                notificationStatus.Hide()
+                NotifyIcon1.ShowBalloonTip(100, "Successfuly attached to Skype!", "You may now use Skypush!", ToolTipIcon.Info)
+                checkEnable.Enabled = True
+                CheckHkControls(False)
+
+            Case TAttachmentStatus.apiAttachUnknown
+
+
+
+
+        End Select
+
+    End Sub
+
+    Private Sub _skype_Reply(pCommand As Command) Handles _skype.Reply
+        'useful for detecting various other non-supported events from Skype
+        'Debug.WriteLine(pCommand.Command)
+    End Sub
+
+#End Region 'Methods
+
+    Private Sub checkEnable_ToggledChanged() Handles checkEnable.ToggledChanged
+
+        My.Settings.HKEnabled = checkEnable.Toggled
+        My.Settings.Save()
+
+        If checkEnable.Toggled Then
+
+            Hotkey1.Enabled = False
+
+            Hotkey1 = New Hotkey()
+            LowLevelKeyboardHook1 = New LowLevelKeyboardHook()
+
+            _hkMan.RefreshHotKeys(Hotkey1)
+
+            LowLevelKeyboardHook1.StartHook()
+
+        Else
+
+            Hotkey1.Dispose()
+            LowLevelKeyboardHook1.Dispose()
+
+        End If
+
 
     End Sub
 

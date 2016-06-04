@@ -1,16 +1,14 @@
-﻿
-Imports ManagedWinapi
+﻿Imports ManagedWinapi
 
 Public Class HotKeyMan
-
     Public Property IsHotKeySet As Boolean
     Public Property HasMultipleKeys As Boolean
     Public Property HotKeys As New HashSet(Of Keys)
     Public Property HotKeysString As String
 
-    Public Sub ProcessKeys(ByVal keyData As Keys)
+    Public Function ProcessKeys(keyData As Keys) As String
 
-        Dim hotkey As String = ""
+        Dim hotkey = ""
 
         Dim pKeys As String() = keyData.ToString().Split(",")
 
@@ -21,24 +19,23 @@ Public Class HotKeyMan
             If i = 0 Then
                 hotkey += pKeys(0)
             Else
-                If pKeys(1).StartsWith(pKeys(0).Trim()) Then    'detect if only one special key was pressed, like control etc. 
+                If pKeys(1).StartsWith(pKeys(0).Trim()) Then _
+                    'detect if only one special key was pressed, like control etc. 
                     hotkey = pKeys(0).Trim()
-                    'hotKeyCs += "," & pKeys(i).ToString()
                     Continue For
                 End If
                 hotkey += " + " & pKeys(i)
             End If
         Next
 
-        My.Settings.HotKey = hotkey
-        My.Settings.Save()
 
         Me.HotKeysString = hotkey
 
+        Return hotkey
 
-    End Sub
+    End Function
 
-    Public Function RefreshHotKeys(ByVal hotkey As Hotkey) As Hotkey
+    Public Function RefreshHotKeys(hotkey As Hotkey) As Hotkey
 
         Try
 
@@ -67,7 +64,6 @@ Public Class HotKeyMan
             End If
 
 
-
         Catch ex As Exception
             Debug.WriteLine("RefreshHotKeys[ERROR]: " & ex.Message)
         End Try
@@ -76,7 +72,7 @@ Public Class HotKeyMan
 
     End Function
 
-    Private Function SetHotKeys(ByVal hotkey As Hotkey) As Hotkey
+    Private Function SetHotKeys(hotkey As Hotkey) As Hotkey
 
         Try
 
@@ -118,19 +114,10 @@ Public Class HotKeyMan
         End Try
 
         Return hotkey
-
     End Function
-    Public Function GetKeyFromString(ByVal keyStr As String) As Keys
 
-        Try
-            Dim strKey As Keys = [Enum].Parse(GetType(Keys), keyStr, True)
-
-            Return strKey
-
-        Catch ex As Exception
-            Return False
-        End Try
-
+    Public Function GetKeyFromString(keyStr As String) As Keys
+        Return [Enum].Parse(GetType(Keys), keyStr, True)
     End Function
 
 End Class

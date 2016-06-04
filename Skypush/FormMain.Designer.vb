@@ -32,7 +32,9 @@ Partial Class FormMain
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormMain))
         Me.Hotkey1 = New ManagedWinapi.Hotkey(Me.components)
         Me.LowLevelKeyboardHook1 = New ManagedWinapi.Hooks.LowLevelKeyboardHook()
+        Me.NotifyIcon1 = New System.Windows.Forms.NotifyIcon(Me.components)
         Me.MonoFlat_ThemeContainer1 = New Skypush.ThemeBase.MonoFlatThemeContainer()
+        Me.notificationStatus = New Skypush.ThemeBase.MonoFlat_NotificationBox()
         Me.winControlBox = New Skypush.ThemeBase.MonoFlat_ControlBox()
         Me.checkEnable = New Skypush.ThemeBase.MonoFlat_Toggle()
         Me.Button1 = New System.Windows.Forms.Button()
@@ -40,12 +42,8 @@ Partial Class FormMain
         Me.headHotKeys = New Skypush.ThemeBase.MonoFlat_HeaderLabel()
         Me.labelHotKey = New Skypush.ThemeBase.MonoFlat_Label()
         Me.TextHotKey = New Skypush.ThemeBase.MonoFlat_TextBox()
-        Me.panelOptions = New Skypush.ThemeBase.MonoFlat_Panel()
-        Me.headOptions = New Skypush.ThemeBase.MonoFlat_HeaderLabel()
-        Me.checkStartup = New Skypush.ThemeBase.MonoFlat_CheckBox()
         Me.MonoFlat_ThemeContainer1.SuspendLayout()
         Me.panelHotKeys.SuspendLayout()
-        Me.panelOptions.SuspendLayout()
         Me.SuspendLayout()
         '
         'Hotkey1
@@ -61,6 +59,14 @@ Partial Class FormMain
         '
         Me.LowLevelKeyboardHook1.Type = ManagedWinapi.Hooks.HookType.WH_KEYBOARD_LL
         '
+        'NotifyIcon1
+        '
+        Me.NotifyIcon1.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info
+        Me.NotifyIcon1.BalloonTipTitle = "Skypush"
+        Me.NotifyIcon1.Icon = CType(resources.GetObject("NotifyIcon1.Icon"), System.Drawing.Icon)
+        Me.NotifyIcon1.Text = "NotifyIcon1"
+        Me.NotifyIcon1.Visible = True
+        '
         'MonoFlat_ThemeContainer1
         '
         Me.MonoFlat_ThemeContainer1.BackColor = System.Drawing.Color.FromArgb(CType(CType(32, Byte), Integer), CType(CType(41, Byte), Integer), CType(CType(50, Byte), Integer))
@@ -68,7 +74,7 @@ Partial Class FormMain
         Me.MonoFlat_ThemeContainer1.Controls.Add(Me.checkEnable)
         Me.MonoFlat_ThemeContainer1.Controls.Add(Me.Button1)
         Me.MonoFlat_ThemeContainer1.Controls.Add(Me.panelHotKeys)
-        Me.MonoFlat_ThemeContainer1.Controls.Add(Me.panelOptions)
+        Me.MonoFlat_ThemeContainer1.Controls.Add(Me.notificationStatus)
         Me.MonoFlat_ThemeContainer1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.MonoFlat_ThemeContainer1.Font = New System.Drawing.Font("Segoe UI", 9.0!)
         Me.MonoFlat_ThemeContainer1.Location = New System.Drawing.Point(0, 0)
@@ -76,11 +82,28 @@ Partial Class FormMain
         Me.MonoFlat_ThemeContainer1.Padding = New System.Windows.Forms.Padding(10, 70, 10, 9)
         Me.MonoFlat_ThemeContainer1.RoundCorners = False
         Me.MonoFlat_ThemeContainer1.Sizable = False
-        Me.MonoFlat_ThemeContainer1.Size = New System.Drawing.Size(226, 278)
+        Me.MonoFlat_ThemeContainer1.Size = New System.Drawing.Size(226, 220)
         Me.MonoFlat_ThemeContainer1.SmartBounds = True
         Me.MonoFlat_ThemeContainer1.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.MonoFlat_ThemeContainer1.TabIndex = 17
         Me.MonoFlat_ThemeContainer1.Text = "Skypush"
+        '
+        'notificationStatus
+        '
+        Me.notificationStatus.BorderCurve = 8
+        Me.notificationStatus.Font = New System.Drawing.Font("Tahoma", 9.0!)
+        Me.notificationStatus.Image = Nothing
+        Me.notificationStatus.Location = New System.Drawing.Point(10, 73)
+        Me.notificationStatus.MinimumSize = New System.Drawing.Size(100, 40)
+        Me.notificationStatus.Name = "notificationStatus"
+        Me.notificationStatus.NotificationType = Skypush.ThemeBase.MonoFlat_NotificationBox.Type.Warning
+        Me.notificationStatus.RoundCorners = False
+        Me.notificationStatus.ShowCloseButton = False
+        Me.notificationStatus.Size = New System.Drawing.Size(206, 88)
+        Me.notificationStatus.TabIndex = 20
+        Me.notificationStatus.Text = "Please check your Skype! Until you confirm access, you'll be unable to use Skypus" & _
+    "h."
+        Me.notificationStatus.Title = "AWAITING USER INPUT"
         '
         'winControlBox
         '
@@ -97,7 +120,8 @@ Partial Class FormMain
         '
         'checkEnable
         '
-        Me.checkEnable.Location = New System.Drawing.Point(13, 233)
+        Me.checkEnable.Enabled = False
+        Me.checkEnable.Location = New System.Drawing.Point(13, 172)
         Me.checkEnable.Name = "checkEnable"
         Me.checkEnable.Size = New System.Drawing.Size(76, 33)
         Me.checkEnable.TabIndex = 2
@@ -120,7 +144,7 @@ Partial Class FormMain
         Me.panelHotKeys.Controls.Add(Me.headHotKeys)
         Me.panelHotKeys.Controls.Add(Me.labelHotKey)
         Me.panelHotKeys.Controls.Add(Me.TextHotKey)
-        Me.panelHotKeys.Location = New System.Drawing.Point(10, 134)
+        Me.panelHotKeys.Location = New System.Drawing.Point(10, 73)
         Me.panelHotKeys.Name = "panelHotKeys"
         Me.panelHotKeys.Padding = New System.Windows.Forms.Padding(5)
         Me.panelHotKeys.Size = New System.Drawing.Size(206, 88)
@@ -168,43 +192,9 @@ Partial Class FormMain
         Me.TextHotKey.TextAlignment = System.Windows.Forms.HorizontalAlignment.Left
         Me.TextHotKey.UseSystemPasswordChar = False
         '
-        'panelOptions
-        '
-        Me.panelOptions.BackColor = System.Drawing.Color.FromArgb(CType(CType(39, Byte), Integer), CType(CType(51, Byte), Integer), CType(CType(63, Byte), Integer))
-        Me.panelOptions.Controls.Add(Me.headOptions)
-        Me.panelOptions.Controls.Add(Me.checkStartup)
-        Me.panelOptions.Location = New System.Drawing.Point(10, 73)
-        Me.panelOptions.Name = "panelOptions"
-        Me.panelOptions.Padding = New System.Windows.Forms.Padding(5)
-        Me.panelOptions.Size = New System.Drawing.Size(206, 55)
-        Me.panelOptions.TabIndex = 16
-        Me.panelOptions.Text = "MonoFlat_Panel1"
-        '
-        'headOptions
-        '
-        Me.headOptions.AutoSize = True
-        Me.headOptions.BackColor = System.Drawing.Color.Transparent
-        Me.headOptions.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.headOptions.ForeColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.headOptions.Location = New System.Drawing.Point(8, 0)
-        Me.headOptions.Name = "headOptions"
-        Me.headOptions.Size = New System.Drawing.Size(53, 15)
-        Me.headOptions.TabIndex = 21
-        Me.headOptions.Text = "Options:"
-        '
-        'checkStartup
-        '
-        Me.checkStartup.Checked = False
-        Me.checkStartup.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!)
-        Me.checkStartup.Location = New System.Drawing.Point(11, 27)
-        Me.checkStartup.Name = "checkStartup"
-        Me.checkStartup.Size = New System.Drawing.Size(184, 16)
-        Me.checkStartup.TabIndex = 17
-        Me.checkStartup.Text = "Start with windows"
-        '
         'FormMain
         '
-        Me.ClientSize = New System.Drawing.Size(226, 278)
+        Me.ClientSize = New System.Drawing.Size(226, 220)
         Me.Controls.Add(Me.MonoFlat_ThemeContainer1)
         Me.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
@@ -218,23 +208,20 @@ Partial Class FormMain
         Me.MonoFlat_ThemeContainer1.ResumeLayout(False)
         Me.panelHotKeys.ResumeLayout(False)
         Me.panelHotKeys.PerformLayout()
-        Me.panelOptions.ResumeLayout(False)
-        Me.panelOptions.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
     Friend WithEvents MonoFlat_ThemeContainer1 As MonoFlatThemeContainer
-    Friend WithEvents panelOptions As MonoFlat_Panel
-    Friend WithEvents checkStartup As MonoFlat_CheckBox
     Friend WithEvents panelHotKeys As MonoFlat_Panel
     Friend WithEvents headHotKeys As MonoFlat_HeaderLabel
     Friend WithEvents labelHotKey As MonoFlat_Label
-    Friend WithEvents headOptions As MonoFlat_HeaderLabel
     Friend WithEvents Button1 As Button
     Friend WithEvents TextHotKey As MonoFlat_TextBox
     Friend WithEvents LowLevelKeyboardHook1 As LowLevelKeyboardHook
     Public WithEvents Hotkey1 As Hotkey
     Friend WithEvents winControlBox As Skypush.ThemeBase.MonoFlat_ControlBox
     Friend WithEvents checkEnable As Skypush.ThemeBase.MonoFlat_Toggle
+    Friend WithEvents NotifyIcon1 As System.Windows.Forms.NotifyIcon
+    Friend WithEvents notificationStatus As Skypush.ThemeBase.MonoFlat_NotificationBox
 
 End Class
