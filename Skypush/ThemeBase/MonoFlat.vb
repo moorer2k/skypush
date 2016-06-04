@@ -1037,6 +1037,7 @@ Namespace ThemeBase
             Font = New Font("Tahoma", 9)
 
             Me.MinimumSize = New Size(100, 40)
+
             RoundCorners = False
             ShowCloseButton = True
         End Sub
