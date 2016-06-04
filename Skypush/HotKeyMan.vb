@@ -114,6 +114,7 @@ Public Class HotKeyMan
         End Try
 
         Return hotkey
+
     End Function
 
     Public Function GetKeyFromString(keyStr As String) As Keys

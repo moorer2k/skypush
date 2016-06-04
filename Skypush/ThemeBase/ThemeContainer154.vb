@@ -1247,6 +1247,7 @@ Namespace ThemeBase
         Private OffsetReturnPoint As Point
         Private OffsetReturnRectangle As Rectangle
         Private OffsetReturnSize As Size
+        Private _b As Object
         Private _BackColor As Boolean
         Private _Customization As String
         Private _Image As Image
@@ -1479,9 +1480,9 @@ Namespace ThemeBase
             End Set
         End Property
 
-#End Region 'Properties
+        #End Region 'Properties
 
-#Region "Methods"
+        #Region "Methods"
 
         Protected Function Center(ByVal p As Rectangle, ByVal c As Rectangle) As Point
             CenterReturn = New Point((p.Width \ 2 - c.Width \ 2) + p.X + c.X, (p.Height \ 2 - c.Height \ 2) + p.Y + c.Y)
@@ -1763,7 +1764,7 @@ Namespace ThemeBase
             MyBase.OnEnabledChanged(e)
         End Sub
 
-        Protected NotOverridable Overrides Sub OnHandleCreated(ByVal e As EventArgs)
+        Protected Overrides NotOverridable Sub OnHandleCreated(ByVal e As EventArgs)
             InvalidateCustimization()
             ColorHook()
 
@@ -1803,7 +1804,7 @@ Namespace ThemeBase
             MyBase.OnMouseUp(e)
         End Sub
 
-        Protected NotOverridable Overrides Sub OnPaint(ByVal e As PaintEventArgs)
+        Protected Overrides NotOverridable Sub OnPaint(ByVal e As PaintEventArgs)
             If Width = 0 OrElse Height = 0 Then Return
 
             If _Transparent Then
@@ -1815,7 +1816,7 @@ Namespace ThemeBase
             End If
         End Sub
 
-        Protected NotOverridable Overrides Sub OnParentChanged(ByVal e As EventArgs)
+        Protected Overrides NotOverridable Sub OnParentChanged(ByVal e As EventArgs)
             If Parent IsNot Nothing Then
                 OnCreation()
                 DoneCreation = True
@@ -1825,7 +1826,7 @@ Namespace ThemeBase
             MyBase.OnParentChanged(e)
         End Sub
 
-        Protected NotOverridable Overrides Sub OnSizeChanged(ByVal e As EventArgs)
+        Protected Overrides NotOverridable Sub OnSizeChanged(ByVal e As EventArgs)
             If _Transparent Then
                 InvalidateBitmap()
             End If
@@ -1948,9 +1949,7 @@ Namespace ThemeBase
             Invalidate()
         End Sub
 
-#End Region 'Methods
-
-        Private _b As Object
+        #End Region 'Methods
 
     End Class
 

@@ -17,7 +17,7 @@ Namespace ThemeBase
     Class MonoFlatThemeContainer
         Inherits ContainerControl
 
-#Region "Fields"
+        #Region "Fields"
 
         Protected State As MouseState
 
@@ -38,9 +38,9 @@ Namespace ThemeBase
         Private _SmartBounds As Boolean = True
         Private _StartPosition As FormStartPosition
 
-#End Region 'Fields
+        #End Region 'Fields
 
-#Region "Constructors"
+        #Region "Constructors"
 
         Sub New()
             SetStyle(DirectCast(139270, ControlStyles), True)
@@ -52,9 +52,9 @@ Namespace ThemeBase
             Font = New Font("Segoe UI", 9)
         End Sub
 
-#End Region 'Constructors
+        #End Region 'Constructors
 
-#Region "Enumerations"
+        #Region "Enumerations"
 
         Enum MouseState As Byte
             None = 0
@@ -63,9 +63,9 @@ Namespace ThemeBase
             Block = 3
         End Enum
 
-#End Region 'Enumerations
+        #End Region 'Enumerations
 
-#Region "Properties"
+        #Region "Properties"
 
         Protected Property ControlMode() As Boolean
             Get
@@ -131,9 +131,9 @@ Namespace ThemeBase
             End Set
         End Property
 
-#End Region 'Properties
+        #End Region 'Properties
 
-#Region "Methods"
+        #Region "Methods"
 
         Protected Overrides Sub CreateHandle()
             MyBase.CreateHandle()
@@ -259,7 +259,7 @@ Namespace ThemeBase
             MyBase.OnPaintBackground(e)
         End Sub
 
-        Protected NotOverridable Overrides Sub OnParentChanged(ByVal e As EventArgs)
+        Protected Overrides NotOverridable Sub OnParentChanged(ByVal e As EventArgs)
             MyBase.OnParentChanged(e)
 
             If Parent Is Nothing Then Return
@@ -281,7 +281,7 @@ Namespace ThemeBase
             End If
         End Sub
 
-        Protected NotOverridable Overrides Sub OnSizeChanged(ByVal e As EventArgs)
+        Protected Overrides NotOverridable Sub OnSizeChanged(ByVal e As EventArgs)
             MyBase.OnSizeChanged(e)
             If Not _ControlMode Then HeaderRect = New Rectangle(0, 0, Width - 14, MoveHeight - 7)
             Invalidate()
@@ -386,14 +386,14 @@ Namespace ThemeBase
             Invalidate()
         End Sub
 
-#End Region 'Methods
+        #End Region 'Methods
 
     End Class
 
     Class MonoFlat_Button
         Inherits Control
 
-#Region "Fields"
+        #Region "Fields"
 
         Private InactiveGB, PressedGB As LinearGradientBrush
         Private MouseState As Integer
@@ -406,9 +406,9 @@ Namespace ThemeBase
         Private _TextAlignment As StringAlignment = StringAlignment.Center
         Private _TextColor As Color = Color.FromArgb(150, 150, 150)
 
-#End Region 'Fields
+        #End Region 'Fields
 
-#Region "Constructors"
+        #Region "Constructors"
 
         Sub New()
             SetStyle(ControlStyles.AllPaintingInWmPaint Or _
@@ -427,9 +427,9 @@ Namespace ThemeBase
             P3 = New Pen(Color.FromArgb(22, 160, 133))  ' P3 = Border color when pressed
         End Sub
 
-#End Region 'Constructors
+        #End Region 'Constructors
 
-#Region "Properties"
+        #Region "Properties"
 
         Public Overrides Property ForeColor() As Color
             Get
@@ -483,9 +483,9 @@ Namespace ThemeBase
             End Set
         End Property
 
-#End Region 'Properties
+        #End Region 'Properties
 
-#Region "Methods"
+        #Region "Methods"
 
         Protected Overrides Sub OnMouseDown(ByVal e As MouseEventArgs)
             MouseState = 1
@@ -619,7 +619,7 @@ Namespace ThemeBase
             Return SF
         End Function
 
-#End Region 'Methods
+        #End Region 'Methods
 
     End Class
 
@@ -627,15 +627,15 @@ Namespace ThemeBase
     Class MonoFlat_CheckBox
         Inherits Control
 
-#Region "Fields"
+        #Region "Fields"
 
         Private Shape As GraphicsPath
         Private X As Integer
         Private _Checked As Boolean = False
 
-#End Region 'Fields
+        #End Region 'Fields
 
-#Region "Constructors"
+        #Region "Constructors"
 
         Sub New()
             Width = 148
@@ -644,15 +644,15 @@ Namespace ThemeBase
             DoubleBuffered = True
         End Sub
 
-#End Region 'Constructors
+        #End Region 'Constructors
 
-#Region "Events"
+        #Region "Events"
 
         Event CheckedChanged(ByVal sender As Object)
 
-#End Region 'Events
+        #End Region 'Events
 
-#Region "Properties"
+        #Region "Properties"
 
         Property Checked() As Boolean
             Get
@@ -664,9 +664,9 @@ Namespace ThemeBase
             End Set
         End Property
 
-#End Region 'Properties
+        #End Region 'Properties
 
-#Region "Methods"
+        #Region "Methods"
 
         Protected Overrides Sub OnMouseDown(ByVal e As MouseEventArgs)
             _Checked = Not _Checked
@@ -719,14 +719,14 @@ Namespace ThemeBase
             Invalidate()
         End Sub
 
-#End Region 'Methods
+        #End Region 'Methods
 
     End Class
 
     Class MonoFlat_ControlBox
         Inherits Control
 
-#Region "Fields"
+        #Region "Fields"
 
         Private ButtonHState As ButtonHoverState = ButtonHoverState.None
 
@@ -745,9 +745,9 @@ Namespace ThemeBase
         Private _enableHoverHighlight As Boolean = False
         Private _enableMinimize As Boolean = True
 
-#End Region 'Fields
+        #End Region 'Fields
 
-#Region "Constructors"
+        #Region "Constructors"
 
         Sub New()
             MyBase.New()
@@ -755,9 +755,9 @@ Namespace ThemeBase
             Anchor = AnchorStyles.Top Or AnchorStyles.Right
         End Sub
 
-#End Region 'Constructors
+        #End Region 'Constructors
 
-#Region "Enumerations"
+        #Region "Enumerations"
 
         Enum ButtonHoverState
             Minimize
@@ -767,9 +767,9 @@ Namespace ThemeBase
             About
         End Enum
 
-#End Region 'Enumerations
+        #End Region 'Enumerations
 
-#Region "Properties"
+        #Region "Properties"
 
         Property AboutForm() As Form
             Get
@@ -811,9 +811,9 @@ Namespace ThemeBase
             End Set
         End Property
 
-#End Region 'Properties
+        #End Region 'Properties
 
-#Region "Methods"
+        #Region "Methods"
 
         Protected Overrides Sub OnCreateControl()
             MyBase.OnCreateControl()
@@ -955,14 +955,14 @@ Namespace ThemeBase
             Size = New Size(100, 25)
         End Sub
 
-#End Region 'Methods
+        #End Region 'Methods
 
     End Class
 
     Class MonoFlat_HeaderLabel
         Inherits Label
 
-#Region "Constructors"
+        #Region "Constructors"
 
         Sub New()
             Font = New Font("Segoe UI", 11, FontStyle.Bold)
@@ -970,14 +970,14 @@ Namespace ThemeBase
             BackColor = Color.Transparent
         End Sub
 
-#End Region 'Constructors
+        #End Region 'Constructors
 
     End Class
 
     Class MonoFlat_Label
         Inherits Label
 
-#Region "Constructors"
+        #Region "Constructors"
 
         Sub New()
             Font = New Font("Segoe UI", 9)
@@ -985,14 +985,14 @@ Namespace ThemeBase
             BackColor = Color.Transparent
         End Sub
 
-#End Region 'Constructors
+        #End Region 'Constructors
 
     End Class
 
     Class MonoFlat_LinkLabel
         Inherits LinkLabel
 
-#Region "Constructors"
+        #Region "Constructors"
 
         Sub New()
             Font = New Font("Segoe UI", 9, FontStyle.Regular)
@@ -1003,30 +1003,30 @@ Namespace ThemeBase
             LinkBehavior = LinkBehavior.NeverUnderline
         End Sub
 
-#End Region 'Constructors
+        #End Region 'Constructors
 
     End Class
 
     Class MonoFlat_NotificationBox
         Inherits Control
 
-#Region "Fields"
+        #Region "Fields"
 
+        Private _borderCurve As Integer = 8
         Private _closeCoordinates As Point
         Private _createRoundPath As GraphicsPath
-        Private _isOverClose As Boolean
-        Private _notificationText As String = Nothing
-        Private _borderCurve As Integer = 8
         Private _image As Image
         Private _imageSize As Size
+        Private _isOverClose As Boolean
+        Private _notificationText As String = Nothing
         Private _notificationType As Type
         Private _roundedCorners As Boolean
         Private _showCloseButton As Boolean
         Private _title As String
 
-#End Region 'Fields
+        #End Region 'Fields
 
-#Region "Constructors"
+        #Region "Constructors"
 
         Sub New()
             SetStyle(ControlStyles.AllPaintingInWmPaint Or _
@@ -1042,9 +1042,9 @@ Namespace ThemeBase
             ShowCloseButton = True
         End Sub
 
-#End Region 'Constructors
+        #End Region 'Constructors
 
-#Region "Enumerations"
+        #Region "Enumerations"
 
         ' Create a list of Notification Types
         Enum Type
@@ -1055,9 +1055,9 @@ Namespace ThemeBase
             [Custom]
         End Enum
 
-#End Region 'Enumerations
+        #End Region 'Enumerations
 
-#Region "Properties"
+        #Region "Properties"
 
         ' Integer value to determine the curve level of the borders
         Public Property BorderCurve() As Integer
@@ -1137,9 +1137,9 @@ Namespace ThemeBase
             End Set
         End Property
 
-#End Region 'Properties
+        #End Region 'Properties
 
-#Region "Methods"
+        #Region "Methods"
 
         Friend Function CreateRoundRect(ByVal r As Rectangle, ByVal curve As Integer) As GraphicsPath
             ' Draw a border radius
@@ -1255,20 +1255,20 @@ Namespace ThemeBase
             CrvBorderPath.Dispose()
         End Sub
 
-#End Region 'Methods
+        #End Region 'Methods
 
     End Class
 
     Class MonoFlat_Panel
         Inherits ContainerControl
 
-#Region "Fields"
+        #Region "Fields"
 
         Private Shape As GraphicsPath
 
-#End Region 'Fields
+        #End Region 'Fields
 
-#Region "Constructors"
+        #Region "Constructors"
 
         Sub New()
             SetStyle(ControlStyles.SupportsTransparentBackColor, True)
@@ -1280,9 +1280,9 @@ Namespace ThemeBase
             DoubleBuffered = True
         End Sub
 
-#End Region 'Constructors
+        #End Region 'Constructors
 
-#Region "Methods"
+        #Region "Methods"
 
         Protected Overrides Sub OnPaint(ByVal e As PaintEventArgs)
             MyBase.OnPaint(e)
@@ -1313,7 +1313,7 @@ Namespace ThemeBase
             End With
         End Sub
 
-#End Region 'Methods
+        #End Region 'Methods
 
     End Class
 
@@ -1321,14 +1321,14 @@ Namespace ThemeBase
     Class MonoFlat_RadioButton
         Inherits Control
 
-#Region "Fields"
+        #Region "Fields"
 
         Private X As Integer
         Private _Checked As Boolean
 
-#End Region 'Fields
+        #End Region 'Fields
 
-#Region "Constructors"
+        #Region "Constructors"
 
         Public Sub New()
             Width = 159
@@ -1336,15 +1336,15 @@ Namespace ThemeBase
             DoubleBuffered = True
         End Sub
 
-#End Region 'Constructors
+        #End Region 'Constructors
 
-#Region "Events"
+        #Region "Events"
 
         Event CheckedChanged(ByVal sender As Object)
 
-#End Region 'Events
+        #End Region 'Events
 
-#Region "Properties"
+        #Region "Properties"
 
         Property Checked() As Boolean
             Get
@@ -1358,9 +1358,9 @@ Namespace ThemeBase
             End Set
         End Property
 
-#End Region 'Properties
+        #End Region 'Properties
 
-#Region "Methods"
+        #Region "Methods"
 
         Protected Overrides Sub OnMouseDown(ByVal e As MouseEventArgs)
             If Not _Checked Then Checked = True
@@ -1411,53 +1411,53 @@ Namespace ThemeBase
             Next
         End Sub
 
-#End Region 'Methods
+        #End Region 'Methods
 
     End Class
 
     Class MonoFlat_Separator
         Inherits Control
 
-#Region "Constructors"
+        #Region "Constructors"
 
         Sub New()
             SetStyle(ControlStyles.ResizeRedraw, True)
             Me.Size = New Point(120, 10)
         End Sub
 
-#End Region 'Constructors
+        #End Region 'Constructors
 
-#Region "Methods"
+        #Region "Methods"
 
         Protected Overrides Sub OnPaint(ByVal e As PaintEventArgs)
             MyBase.OnPaint(e)
             e.Graphics.DrawLine(New Pen(Color.FromArgb(45, 57, 68)), 0, 5, Width, 5)
         End Sub
 
-#End Region 'Methods
+        #End Region 'Methods
 
     End Class
 
     Class MonoFlat_SocialButton
         Inherits Control
 
-#Region "Fields"
+        #Region "Fields"
 
         Private EllipseColor As Color = Color.FromArgb(66, 76, 85)
         Private _Image As Image
         Private _ImageSize As Size
 
-#End Region 'Fields
+        #End Region 'Fields
 
-#Region "Constructors"
+        #Region "Constructors"
 
         Sub New()
             DoubleBuffered = True
         End Sub
 
-#End Region 'Constructors
+        #End Region 'Constructors
 
-#Region "Properties"
+        #Region "Properties"
 
         Protected ReadOnly Property ImageSize() As Size
             Get
@@ -1481,9 +1481,9 @@ Namespace ThemeBase
             End Set
         End Property
 
-#End Region 'Properties
+        #End Region 'Properties
 
-#Region "Methods"
+        #Region "Methods"
 
         Protected Overrides Sub OnMouseDown(e As MouseEventArgs)
             MyBase.OnMouseDown(e)
@@ -1555,7 +1555,7 @@ Namespace ThemeBase
             Return SF
         End Function
 
-#End Region 'Methods
+        #End Region 'Methods
 
     End Class
 
@@ -1563,9 +1563,9 @@ Namespace ThemeBase
     Class MonoFlat_TextBox
         Inherits Control
 
-#Region "Fields"
+        #Region "Fields"
 
-        Public WithEvents MonoFlatTB As New TextBox
+        Public  WithEvents MonoFlatTB As New TextBox
 
         Private ALNType As HorizontalAlignment
         Private B1 As SolidBrush
@@ -1578,9 +1578,9 @@ Namespace ThemeBase
         Private _Multiline As Boolean
         Private _ReadOnly As Boolean
 
-#End Region 'Fields
+        #End Region 'Fields
 
-#Region "Constructors"
+        #Region "Constructors"
 
         Sub New()
             SetStyle(ControlStyles.SupportsTransparentBackColor, True)
@@ -1600,9 +1600,9 @@ Namespace ThemeBase
             DoubleBuffered = True
         End Sub
 
-#End Region 'Constructors
+        #End Region 'Constructors
 
-#Region "Properties"
+        #Region "Properties"
 
         Public Shadows Property MaxLength() As Integer
             Get
@@ -1694,9 +1694,9 @@ Namespace ThemeBase
             End Set
         End Property
 
-#End Region 'Properties
+        #End Region 'Properties
 
-#Region "Methods"
+        #Region "Methods"
 
         Protected Overrides Sub OnFontChanged(ByVal e As EventArgs)
             MyBase.OnFontChanged(e)
@@ -1820,7 +1820,7 @@ Namespace ThemeBase
             Text = MonoFlatTB.Text
         End Sub
 
-#End Region 'Methods
+        #End Region 'Methods
 
     End Class
 
@@ -1828,16 +1828,16 @@ Namespace ThemeBase
     Class MonoFlat_Toggle
         Inherits Control
 
-#Region "Fields"
+        #Region "Fields"
 
         Private ToggleType As _Type
         Private _bar As Rectangle
         Private _Toggled As Boolean
         Private _width, _height As Integer
 
-#End Region 'Fields
+        #End Region 'Fields
 
-#Region "Constructors"
+        #Region "Constructors"
 
         Sub New()
             SetStyle(ControlStyles.AllPaintingInWmPaint Or _
@@ -1846,9 +1846,9 @@ Namespace ThemeBase
                       ControlStyles.UserPaint, True)
         End Sub
 
-#End Region 'Constructors
+        #End Region 'Constructors
 
-#Region "Enumerations"
+        #Region "Enumerations"
 
         Enum _Type
             CheckMark
@@ -1857,15 +1857,15 @@ Namespace ThemeBase
             IO
         End Enum
 
-#End Region 'Enumerations
+        #End Region 'Enumerations
 
-#Region "Events"
+        #Region "Events"
 
         Event ToggledChanged()
 
-#End Region 'Events
+        #End Region 'Events
 
-#Region "Properties"
+        #Region "Properties"
 
         Public Property Toggled() As Boolean
             Get
@@ -1888,9 +1888,9 @@ Namespace ThemeBase
             End Set
         End Property
 
-#End Region 'Properties
+        #End Region 'Properties
 
-#Region "Methods"
+        #Region "Methods"
 
         Protected Overrides Sub OnMouseUp(ByVal e As MouseEventArgs)
             MyBase.OnMouseUp(e)
@@ -1964,7 +1964,7 @@ Namespace ThemeBase
             Me.Size = New Size(76, 33)
         End Sub
 
-#End Region 'Methods
+        #End Region 'Methods
 
     End Class
 
@@ -1972,7 +1972,7 @@ Namespace ThemeBase
     Class MonoFlat_TrackBar
         Inherits Control
 
-#Region "Fields"
+        #Region "Fields"
 
         Private Cap As Boolean
         Private DividedValue As ValueDivisor = ValueDivisor.By1
@@ -1985,9 +1985,9 @@ Namespace ThemeBase
         Private _Minimum As Integer = 0
         Private _Value As Integer = 0
 
-#End Region 'Fields
+        #End Region 'Fields
 
-#Region "Constructors"
+        #Region "Constructors"
 
         Sub New()
             SetStyle(ControlStyles.AllPaintingInWmPaint Or _
@@ -1999,9 +1999,9 @@ Namespace ThemeBase
             MinimumSize = New Size(47, 22)
         End Sub
 
-#End Region 'Constructors
+        #End Region 'Constructors
 
-#Region "Enumerations"
+        #Region "Enumerations"
 
         Enum ValueDivisor
             By1 = 1
@@ -2010,15 +2010,15 @@ Namespace ThemeBase
             By1000 = 1000
         End Enum
 
-#End Region 'Enumerations
+        #End Region 'Enumerations
 
-#Region "Events"
+        #Region "Events"
 
         Event ValueChanged()
 
-#End Region 'Events
+        #End Region 'Events
 
-#Region "Properties"
+        #Region "Properties"
 
         Public Property JumpToMouse() As Boolean
             Get
@@ -2099,9 +2099,9 @@ Namespace ThemeBase
             End Set
         End Property
 
-#End Region 'Properties
+        #End Region 'Properties
 
-#Region "Methods"
+        #Region "Methods"
 
         Protected Overrides Sub OnMouseDown(ByVal e As MouseEventArgs)
             MyBase.OnMouseDown(e)
@@ -2165,13 +2165,13 @@ Namespace ThemeBase
             Height = 22
         End Sub
 
-#End Region 'Methods
+        #End Region 'Methods
 
     End Class
 
     Module RoundRectangle
 
-#Region "Methods"
+        #Region "Methods"
 
         Public Function RoundRect(ByVal Rectangle As Rectangle, ByVal Curve As Integer) As GraphicsPath
             Dim P As GraphicsPath = New GraphicsPath()
@@ -2184,7 +2184,7 @@ Namespace ThemeBase
             Return P
         End Function
 
-#End Region 'Methods
+        #End Region 'Methods
 
     End Module
 

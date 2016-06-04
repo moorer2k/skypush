@@ -1,6 +1,6 @@
 ﻿Public Class FormAbout
 
-#Region "Methods"
+    #Region "Methods"
 
     Private Sub FormAbout_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
         Hide()
@@ -15,6 +15,6 @@
         End Using
     End Sub
 
-#End Region 'Methods
+    #End Region 'Methods
 
 End Class

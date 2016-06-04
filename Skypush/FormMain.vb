@@ -1,7 +1,5 @@
-﻿Imports System.Threading
-Imports ManagedWinapi
+﻿Imports ManagedWinapi
 Imports ManagedWinapi.Hooks
-
 Imports SKYPE4COMLib
 Imports Skypush.ThemeBase
 
@@ -62,8 +60,30 @@ Public Class FormMain
         Return MyBase.ProcessCmdKey(msg, keyData)
     End Function
 
-    Private Sub CheckHkControls(save As Boolean)
+    Private Sub checkEnable_ToggledChanged() Handles checkEnable.ToggledChanged
+        My.Settings.HKEnabled = checkEnable.Toggled
+        My.Settings.Save()
 
+        If checkEnable.Toggled Then
+
+            Hotkey1.Enabled = False
+
+            Hotkey1 = New Hotkey()
+            LowLevelKeyboardHook1 = New LowLevelKeyboardHook()
+
+            _hkMan.RefreshHotKeys(Hotkey1)
+
+            LowLevelKeyboardHook1.StartHook()
+
+        Else
+
+            Hotkey1.Dispose()
+            LowLevelKeyboardHook1.Dispose()
+
+        End If
+    End Sub
+
+    Private Sub CheckHkControls(save As Boolean)
         checkEnable.Toggled = My.Settings.HKEnabled
 
         If save Then
@@ -84,30 +104,9 @@ Public Class FormMain
         End If
 
         headHotKeys.Focus()
-
-
     End Sub
 
-    Private Sub FormMain_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
-        My.Settings.HKEnabled = checkEnable.Toggled
-        My.Settings.Save()
-    End Sub
-
-    Private Sub SetNotification(title As String, msg As String, type As MonoFlat_NotificationBox.Type)
-
-        With notificationStatus
-            .Title = title
-            .Text = msg
-            .NotificationType = type
-            .Height = 132
-            .Visible = True
-            .BringToFront()
-            .Show()
-        End With
-
-    End Sub
     Private Function CheckSkype()
-
         Dim isRunning As Boolean
 
         Try
@@ -119,11 +118,14 @@ Public Class FormMain
         End Try
 
         Return isRunning
-
     End Function
 
-    Private Sub FormMain_Load(sender As Object, e As EventArgs) Handles Me.Load
+    Private Sub FormMain_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
+        My.Settings.HKEnabled = checkEnable.Toggled
+        My.Settings.Save()
+    End Sub
 
+    Private Sub FormMain_Load(sender As Object, e As EventArgs) Handles Me.Load
         CheckHkControls(False)
 
         winControlBox.AboutForm = FormAbout
@@ -133,20 +135,20 @@ Public Class FormMain
         Else
             SetNotification("SKYPE NOT RUNNING?", "Skype is either not open or the original file name has been changed. Re-Open Skype or use Skype.exe as the EXE name and try again.", 3)
         End If
+    End Sub
 
+    Private Sub FormMain_SizeChanged(sender As Object, e As EventArgs) Handles Me.SizeChanged
+        Me.UpdateTrayState(Me.WindowState = FormWindowState.Minimized)
     End Sub
 
     Private Sub Hotkey1_HotkeyPressed(sender As Object, e As EventArgs) Handles Hotkey1.HotkeyPressed
-
         _isPressed = True
         DirectCast(_skype, ISkype).Mute = False
 
         Debug.WriteLine("KeyPressed")
-
     End Sub
 
     Private Sub LowLevelKeyboardHook1_KeyIntercepted(msg As Integer, vkCode As Integer, scanCode As Integer, flags As Integer, time As Integer, dwExtraInfo As IntPtr, ByRef handled As Boolean) Handles LowLevelKeyboardHook1.KeyIntercepted
-
         If Not vkCode = Hotkey1.KeyCode Then
 
             _isPressed = False
@@ -157,7 +159,23 @@ Public Class FormMain
             Debug.WriteLine("KeyPressed")
 
         End If
+    End Sub
 
+    Private Sub NotifyIcon1_Click(sender As Object, e As EventArgs) Handles NotifyIcon1.Click
+        Me.UpdateTrayState(False)
+        Me.WindowState = FormWindowState.Normal
+    End Sub
+
+    Private Sub SetNotification(title As String, msg As String, type As MonoFlat_NotificationBox.Type)
+        With notificationStatus
+            .Title = title
+            .Text = msg
+            .NotificationType = type
+            .Height = 132
+            .Visible = True
+            .BringToFront()
+            .Show()
+        End With
     End Sub
 
     Private Sub TextHotKey_Enter(sender As Object, e As EventArgs) Handles TextHotKey.Enter
@@ -170,6 +188,11 @@ Public Class FormMain
     Private Sub TextHotKey_Leave(sender As Object, e As EventArgs) Handles TextHotKey.Leave
         _hotKeySelected = False
         CheckHkControls(False)
+    End Sub
+
+    Private Sub UpdateTrayState(ByVal minimiseToTray As Boolean)
+        Me.Visible = Not minimiseToTray
+        Me.NotifyIcon1.Visible = minimiseToTray
     End Sub
 
     Private Sub _skype_AttachmentStatus(status As TAttachmentStatus) Handles _skype.AttachmentStatus
@@ -196,11 +219,7 @@ Public Class FormMain
 
             Case TAttachmentStatus.apiAttachUnknown
 
-
-
-
         End Select
-
     End Sub
 
     Private Sub _skype_Reply(pCommand As Command) Handles _skype.Reply
@@ -210,42 +229,4 @@ Public Class FormMain
 
 #End Region 'Methods
 
-    Private Sub checkEnable_ToggledChanged() Handles checkEnable.ToggledChanged
-
-        My.Settings.HKEnabled = checkEnable.Toggled
-        My.Settings.Save()
-
-        If checkEnable.Toggled Then
-
-            Hotkey1.Enabled = False
-
-            Hotkey1 = New Hotkey()
-            LowLevelKeyboardHook1 = New LowLevelKeyboardHook()
-
-            _hkMan.RefreshHotKeys(Hotkey1)
-
-            LowLevelKeyboardHook1.StartHook()
-
-        Else
-
-            Hotkey1.Dispose()
-            LowLevelKeyboardHook1.Dispose()
-
-        End If
-
-
-    End Sub
-
-    Private Sub UpdateTrayState(ByVal minimiseToTray As Boolean)
-        Me.Visible = Not minimiseToTray
-        Me.NotifyIcon1.Visible = minimiseToTray
-    End Sub
-
-    Private Sub NotifyIcon1_Click(sender As Object, e As EventArgs) Handles NotifyIcon1.Click
-        Me.UpdateTrayState(False)
-        Me.WindowState = FormWindowState.Normal
-    End Sub
-    Private Sub FormMain_SizeChanged(sender As Object, e As EventArgs) Handles Me.SizeChanged
-     Me.UpdateTrayState(Me.WindowState = FormWindowState.Minimized)
-    End Sub
 End Class
