@@ -5,6 +5,7 @@ Push to talk for skype!
 
 A small program to enable you operate Skype as if it was a Push To Talk based client, like TeamSpeak etc. 
 
+[Download Win32 Binary](https://github.com/moorer2k/skypush/blob/master/Binary%20Release/Release.zip)
 
 # NOTICE
 You must accept the request to attach to your Skype client before this will function. 
