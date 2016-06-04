@@ -236,4 +236,16 @@ Public Class FormMain
 
     End Sub
 
+    Private Sub UpdateTrayState(ByVal minimiseToTray As Boolean)
+        Me.Visible = Not minimiseToTray
+        Me.NotifyIcon1.Visible = minimiseToTray
+    End Sub
+
+    Private Sub NotifyIcon1_Click(sender As Object, e As EventArgs) Handles NotifyIcon1.Click
+        Me.UpdateTrayState(False)
+        Me.WindowState = FormWindowState.Normal
+    End Sub
+    Private Sub FormMain_SizeChanged(sender As Object, e As EventArgs) Handles Me.SizeChanged
+     Me.UpdateTrayState(Me.WindowState = FormWindowState.Minimized)
+    End Sub
 End Class

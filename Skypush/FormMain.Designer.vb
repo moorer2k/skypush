@@ -34,7 +34,6 @@ Partial Class FormMain
         Me.LowLevelKeyboardHook1 = New ManagedWinapi.Hooks.LowLevelKeyboardHook()
         Me.NotifyIcon1 = New System.Windows.Forms.NotifyIcon(Me.components)
         Me.MonoFlat_ThemeContainer1 = New Skypush.ThemeBase.MonoFlatThemeContainer()
-        Me.notificationStatus = New Skypush.ThemeBase.MonoFlat_NotificationBox()
         Me.winControlBox = New Skypush.ThemeBase.MonoFlat_ControlBox()
         Me.checkEnable = New Skypush.ThemeBase.MonoFlat_Toggle()
         Me.Button1 = New System.Windows.Forms.Button()
@@ -42,6 +41,7 @@ Partial Class FormMain
         Me.headHotKeys = New Skypush.ThemeBase.MonoFlat_HeaderLabel()
         Me.labelHotKey = New Skypush.ThemeBase.MonoFlat_Label()
         Me.TextHotKey = New Skypush.ThemeBase.MonoFlat_TextBox()
+        Me.notificationStatus = New Skypush.ThemeBase.MonoFlat_NotificationBox()
         Me.MonoFlat_ThemeContainer1.SuspendLayout()
         Me.panelHotKeys.SuspendLayout()
         Me.SuspendLayout()
@@ -87,23 +87,6 @@ Partial Class FormMain
         Me.MonoFlat_ThemeContainer1.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.MonoFlat_ThemeContainer1.TabIndex = 17
         Me.MonoFlat_ThemeContainer1.Text = "Skypush"
-        '
-        'notificationStatus
-        '
-        Me.notificationStatus.BorderCurve = 8
-        Me.notificationStatus.Font = New System.Drawing.Font("Tahoma", 9.0!)
-        Me.notificationStatus.Image = Nothing
-        Me.notificationStatus.Location = New System.Drawing.Point(10, 73)
-        Me.notificationStatus.MinimumSize = New System.Drawing.Size(100, 40)
-        Me.notificationStatus.Name = "notificationStatus"
-        Me.notificationStatus.NotificationType = Skypush.ThemeBase.MonoFlat_NotificationBox.Type.Warning
-        Me.notificationStatus.RoundCorners = False
-        Me.notificationStatus.ShowCloseButton = False
-        Me.notificationStatus.Size = New System.Drawing.Size(206, 88)
-        Me.notificationStatus.TabIndex = 20
-        Me.notificationStatus.Text = "Please check your Skype! Until you confirm access, you'll be unable to use Skypus" & _
-    "h."
-        Me.notificationStatus.Title = "AWAITING USER INPUT"
         '
         'winControlBox
         '
@@ -191,6 +174,23 @@ Partial Class FormMain
         Me.TextHotKey.Text = "Click here to set."
         Me.TextHotKey.TextAlignment = System.Windows.Forms.HorizontalAlignment.Left
         Me.TextHotKey.UseSystemPasswordChar = False
+        '
+        'notificationStatus
+        '
+        Me.notificationStatus.BorderCurve = 8
+        Me.notificationStatus.Font = New System.Drawing.Font("Tahoma", 9.0!)
+        Me.notificationStatus.Image = Nothing
+        Me.notificationStatus.Location = New System.Drawing.Point(10, 73)
+        Me.notificationStatus.MinimumSize = New System.Drawing.Size(100, 40)
+        Me.notificationStatus.Name = "notificationStatus"
+        Me.notificationStatus.NotificationType = Skypush.ThemeBase.MonoFlat_NotificationBox.Type.Warning
+        Me.notificationStatus.RoundCorners = False
+        Me.notificationStatus.ShowCloseButton = False
+        Me.notificationStatus.Size = New System.Drawing.Size(206, 88)
+        Me.notificationStatus.TabIndex = 20
+        Me.notificationStatus.Text = "Please check your Skype! Until you confirm access, you'll be unable to use Skypus" & _
+    "h."
+        Me.notificationStatus.Title = "AWAITING USER INPUT"
         '
         'FormMain
         '
